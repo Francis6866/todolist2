@@ -51,7 +51,7 @@ const Auth = () => {
             name='password'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder='Task Title'
+            placeholder='Password'
             style={{width: "100%", marginBottom: "0.5rem", padding: "0.5rem"}}
           />
           <button 
