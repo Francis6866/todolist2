@@ -6,7 +6,7 @@ import TodoItem from './TodoItem'
 
 const TaskMaster = () => {
     const [newtask, setNewTask] = useState({ title: "", description: "" })
-    const { todo, addTodo} = useTodo()
+    const { todo, addTodo, fetchAllTodo, fetchCompletedTodo, fetchActiveTodo} = useTodo()
 
    
   
@@ -53,9 +53,9 @@ const TaskMaster = () => {
           </button>
         </form>
         <div className='flex justify-center items-center my-4 gap-4'>
-          <button>All</button>
-          <button>Active</button>
-          <button>Completed</button>
+          <button onClick={fetchAllTodo}>All</button>
+          <button onClick={fetchActiveTodo}>Active</button>
+          <button onClick={fetchCompletedTodo}>Completed</button>
         </div>
   
         {/* list of task */}

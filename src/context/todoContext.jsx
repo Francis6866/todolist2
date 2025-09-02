@@ -27,15 +27,32 @@ export const TodoContextProvider = ({ children }) => {
         try {
             const { data, error } = await supabase
             .from("todolist2")
-            .select("")
+            .select("*")
+            .eq("isCompleted", true)
         
             if(error) return setError(error.message)
+            // console.log(data)
             setTodo(data)
         } catch (error) {
             setError(error.message)
         }
     }
+
     // fetch uncompleted task
+    const fetchActiveTodo = async () => {
+        try {
+            const { data, error } = await supabase
+            .from("todolist2")
+            .select("*")
+            .eq("isCompleted", false)
+        
+            if(error) return setError(error.message)
+            // console.log(data)
+            setTodo(data)
+        } catch (error) {
+            setError(error.message)
+        }
+    }
     // toggle complete
     const toggleCompleted = async (id, isCompleted) => {
         const { data, error } = await supabase
@@ -105,7 +122,8 @@ export const TodoContextProvider = ({ children }) => {
             todo, error,
             addTodo, deleteTodo,
             editTodo, fetchAllTodo,
-            toggleCompleted
+            toggleCompleted, fetchCompletedTodo,
+            fetchActiveTodo
         }}>
             {children}
         </TodoContext.Provider>
