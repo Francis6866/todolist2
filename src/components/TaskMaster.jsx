@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { useState } from 'react'
 import { useTodo } from '../context/todoContext'
 import { useAuth } from '../context/authcontext'
@@ -6,9 +6,16 @@ import TodoItem from './TodoItem'
 
 const TaskMaster = () => {
     const [newtask, setNewTask] = useState({ title: "", description: "" })
-    const { todo, addTodo, fetchAllTodo, fetchCompletedTodo, fetchActiveTodo} = useTodo()
+    const { todo, addTodo } = useTodo()
+    const [filter, setFilter] = useState("all");
 
-   
+    const filteredTodos = useMemo(() => {
+        return todo.filter(t => {
+          if (filter === "active") return !t.isCompleted;
+          if (filter === "completed") return t.isCompleted;
+          return true; // all
+        });
+      }, [todo, filter]);
   
     const handleSubmit = (e) => {
       e.preventDefault()
@@ -53,16 +60,16 @@ const TaskMaster = () => {
           </button>
         </form>
         <div className='flex justify-center items-center my-4 gap-4'>
-          <button onClick={fetchAllTodo}>All</button>
-          <button onClick={fetchActiveTodo}>Active</button>
-          <button onClick={fetchCompletedTodo}>Completed</button>
+          <button onClick={() => setFilter("all")}>All</button>
+          <button onClick={() => setFilter("active")}>Active</button>
+          <button onClick={() => setFilter("completed")}>Completed</button>
         </div>
   
         {/* list of task */}
         <ul style={{listStyle: "none", padding: 0}}>
             {
-              todo && todo.length > 0 
-              ? todo.map(item => (
+              filteredTodos && filteredTodos.length > 0 
+              ? filteredTodos.map(item => (
                 <TodoItem item={item} key={item.id} />
               ))
               : <p>No task to display</p>
