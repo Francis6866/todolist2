@@ -22,13 +22,13 @@ const TaskMaster = () => {
     // }, []) fetch recent todo on mount, doing this already in the update page
   
     return (
-      <div style={{maxWidth: "600px", margin: "0 auto", padding: "1rem"}}>
-        <h2>Task Master CRUD</h2>
+      <div  className='max-w-[600px] my-0 mx-auto p-3'>
+        <h2 className='text-center font-bold text-2xl text-capitalize mb-8'>Task Master CRUD</h2>
   
         <form 
           onSubmit={handleSubmit}
           action="" 
-          style={{ marginBottom: "1rem"}}
+          className='mb-3'
         >
           <input
             type="text"
@@ -36,22 +36,27 @@ const TaskMaster = () => {
             value={newtask.title}
             onChange={(e) => setNewTask(prev => ({...prev, title: e.target.value}))}
             placeholder='Task Title'
-            style={{width: "100%", marginBottom: "0.5rem", padding: "0.5rem"}}
+            className='w-full mb-2 p-2 border border-[#ccc] rounded-md'
           />
           <textarea 
             name="description"
             value={newtask.description}
             onChange={(e) => setNewTask(prev => ({...prev, description: e.target.value}))}
             placeholder='Task Description'
-            style={{width: "100%", marginBottom: "0.5rem", padding: "0.5rem"}}
+            className='w-full mb-2 p-2 border border-[#ccc] rounded-md'
           />
           <button 
             type='submit'
-            style={{padding: "0.5rem 1rem"}}  
+            className='py-2 px-3 w-full'
           >
             Add Task
           </button>
         </form>
+        <div className='flex justify-center items-center my-4 gap-4'>
+          <button>All</button>
+          <button>Active</button>
+          <button>Completed</button>
+        </div>
   
         {/* list of task */}
         <ul style={{listStyle: "none", padding: 0}}>

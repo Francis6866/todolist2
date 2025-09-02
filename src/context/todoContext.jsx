@@ -9,7 +9,7 @@ export const TodoContextProvider = ({ children }) => {
     const [todo, setTodo] = useState([])
     const [error, setError] = useState(null)
 
-    const fetchTodo = async () => {
+    const fetchAllTodo = async () => {
         try {
             const { data, error } = await supabase
             .from("todolist2")
@@ -19,6 +19,38 @@ export const TodoContextProvider = ({ children }) => {
             setTodo(data)
         } catch (error) {
             setError(error.message)
+        }
+    }
+
+    // fetch completed task
+    const fetchCompletedTodo = async () => {
+        try {
+            const { data, error } = await supabase
+            .from("todolist2")
+            .select("")
+        
+            if(error) return setError(error.message)
+            setTodo(data)
+        } catch (error) {
+            setError(error.message)
+        }
+    }
+    // fetch uncompleted task
+    // toggle complete
+    const toggleCompleted = async (id, isCompleted) => {
+        const { data, error } = await supabase
+        .from("todolist2")
+        .update({isCompleted: !isCompleted})
+        .eq("id", id)
+        .select()
+        .single()
+
+        if(error){
+            setError(error)
+            return
+        }else {
+            setTodo(prev => prev.map(todo => todo.id === id ?
+                 data : todo ))
         }
     }
 
@@ -63,7 +95,7 @@ export const TodoContextProvider = ({ children }) => {
    
 
     useEffect(() => {
-        fetchTodo()
+        fetchAllTodo()
     }, [])
 
     // console.log("todo", todo)
@@ -72,7 +104,8 @@ export const TodoContextProvider = ({ children }) => {
         <TodoContext.Provider value={{
             todo, error,
             addTodo, deleteTodo,
-            editTodo, fetchTodo
+            editTodo, fetchAllTodo,
+            toggleCompleted
         }}>
             {children}
         </TodoContext.Provider>

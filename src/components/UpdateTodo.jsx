@@ -9,7 +9,7 @@ const UpdateTodo = () => {
     const { id } = useParams()
     const cleanId = parseInt(id.replace(":", ""), 10);  // remove colon if present
     const navigate = useNavigate()
-    const { fetchTodo } = useTodo()
+    const { fetchAllTodo } = useTodo()
 
     const fetchTodoToUpdate = async (num) => {
         
@@ -25,7 +25,7 @@ const UpdateTodo = () => {
                 return setError(error.message);
             }
   
-            console.log(data)
+            // console.log(data)
             setNewTodo(data)
 
         } catch (error) {
@@ -61,19 +61,19 @@ const UpdateTodo = () => {
     const handleSubmit = async (e) => {
       e.preventDefault()
       await updateTodoInDb(newTodo)
-      await fetchTodo()
+      await fetchAllTodo()
        
       navigate("/taskmaster")
     }
   
   return (
-    <div style={{maxWidth: "600px", margin: "0 auto", padding: "1rem"}}>
-        <h2>Task Title</h2>
+    <div className='max-w-[600px] my-0 mx-auto p-3'>
+        <h2 className='text-center font-bold text-2xl text-capitalize mb-8'>Update Task</h2>
   
         <form 
           onSubmit={handleSubmit}
           action="" 
-          style={{ marginBottom: "1rem"}}
+          className='mb-3'
         >
           <input
             type="text"
@@ -81,23 +81,23 @@ const UpdateTodo = () => {
             value={newTodo.title || ""}
             onChange={(e) => setNewTodo(prev => ({...prev, title: e.target.value}))}
             placeholder='Task Title'
-            style={{width: "100%", marginBottom: "0.5rem", padding: "0.5rem"}}
+            className='w-full mb-2 p-2 border border-[#ccc] rounded-md'
           />
           <textarea 
             name="description"
             value={newTodo.description || ""}
             onChange={(e) => setNewTodo(prev => ({...prev, description: e.target.value}))}
             placeholder='Task Description'
-            style={{width: "100%", marginBottom: "0.5rem", padding: "0.5rem"}}
+            className='w-full mb-2 p-2 border border-[#ccc] rounded-md'
           />
           <button 
             type='submit'
-            style={{padding: "0.5rem 1rem"}}  
+            className='py-2 px-3'  
           >
             Update Task
           </button>
         </form>
-        {error && <p>{error}</p>}
+        {error && <p className='text-red'>{error}</p>}
       </div>
   )
 }
